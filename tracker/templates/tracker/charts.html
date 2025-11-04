@@ -1,0 +1,58 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>📊 Weekly Calorie Charts</h2>
+    <p>Track your calorie intake and expenditure over the past 7 days.</p>
+    
+    {% if has_data %}
+        <div style="text-align: center; margin: 2rem 0;">
+            <img src="data:image/png;base64,{{ chart }}" alt="Weekly Calorie Chart" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+            <div style="text-align: center; padding: 1rem; background: #e8f4fd; border-radius: 8px;">
+                <h4>Total Food Calories</h4>
+                <p style="font-size: 1.5rem; margin: 0; color: #3498db; font-weight: bold;">
+                    {{ food_totals|last }}
+                </p>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: #fde8e8; border-radius: 8px;">
+                <h4>Total Exercise Calories</h4>
+                <p style="font-size: 1.5rem; margin: 0; color: #e74c3c; font-weight: bold;">
+                    {{ exercise_totals|last }}
+                </p>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: #e8f8e8; border-radius: 8px;">
+                <h4>Net Calories Today</h4>
+                <p style="font-size: 1.5rem; margin: 0; color: #27ae60; font-weight: bold;">
+                    {{ net_totals|last }}
+                </p>
+            </div>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; background: #f8f9fa; border-radius: 8px; margin: 2rem 0;">
+            <h3 style="color: #6c757d;">📈 No Data Available</h3>
+            <p>{{ message }}</p>
+            <a href="{% url 'add_entry' %}" class="btn" style="margin-top: 1rem;">Add Your First Entry</a>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{% url 'add_entry' %}" class="btn">➕ Add New Entry</a>
+        <a href="{% url 'entries_list' %}" class="btn">📋 View All Entries</a>
+        <a href="{% url 'dashboard' %}" class="btn">🏠 Back to Dashboard</a>
+    </div>
+    
+    {% if has_data %}
+    <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+        <h4>💡 Chart Legend</h4>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin: 0.5rem 0;"><span style="color: #3498db; font-weight: bold;">●</span> Food Calories - Calories consumed from food</li>
+            <li style="margin: 0.5rem 0;"><span style="color: #e74c3c; font-weight: bold;">●</span> Exercise Calories - Calories burned through exercise</li>
+            <li style="margin: 0.5rem 0;"><span style="color: #27ae60; font-weight: bold;">●</span> Net Calories - Food calories minus exercise calories</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

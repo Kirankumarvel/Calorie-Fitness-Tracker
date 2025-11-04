@@ -1,0 +1,21 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Add Calorie Entry</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <small style="color: red;">{{ field.errors }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn">Add Entry</button>
+        <a href="{% url 'dashboard' %}" class="btn" style="background-color: #95a5a6;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Today's Summary - {{ view.today|date:"F d, Y" }}</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+        <div style="text-align: center; padding: 1rem; background: #e8f4fd; border-radius: 8px;">
+            <h3>Food Calories</h3>
+            <p style="font-size: 2rem; margin: 0; color: #3498db;">{{ today_food }}</p>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: #fde8e8; border-radius: 8px;">
+            <h3>Exercise Calories</h3>
+            <p style="font-size: 2rem; margin: 0; color: #e74c3c;">{{ today_exercise }}</p>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: #e8f8e8; border-radius: 8px;">
+            <h3>Net Calories</h3>
+            <p style="font-size: 2rem; margin: 0; color: #27ae60;">{{ today_net }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Quick Actions</h3>
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <a href="{% url 'add_entry' %}" class="btn">Add New Entry</a>
+        <a href="{% url 'charts' %}" class="btn">View Charts</a>
+        <a href="{% url 'entries_list' %}" class="btn">View All Entries</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Entries</h3>
+    {% if recent_entries %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left;">Type</th>
+                    <th style="padding: 0.5rem; text-align: left;">Name</th>
+                    <th style="padding: 0.5rem; text-align: left;">Calories</th>
+                    <th style="padding: 0.5rem; text-align: left;">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in recent_entries %}
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">
+                        {% if entry.entry_type == 'food' %}
+                            <span style="color: #3498db;">Food</span>
+                        {% else %}
+                            <span style="color: #e74c3c;">Exercise</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.name }}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.calories }}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No entries yet. <a href="{% url 'add_entry' %}">Add your first entry!</a></p>
+    {% endif %}
+</div>
+{% endblock %}

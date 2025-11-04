@@ -1,0 +1,45 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>My Entries</h2>
+    
+    {% if entries %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 0.5rem; text-align: left;">Type</th>
+                    <th style="padding: 0.5rem; text-align: left;">Name</th>
+                    <th style="padding: 0.5rem; text-align: left;">Calories</th>
+                    <th style="padding: 0.5rem; text-align: left;">Date</th>
+                    <th style="padding: 0.5rem; text-align: left;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">
+                        {% if entry.entry_type == 'food' %}
+                            <span style="color: #3498db;">Food</span>
+                        {% else %}
+                            <span style="color: #e74c3c;">Exercise</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.name }}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.calories }}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">{{ entry.date }}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #ddd;">
+                        <form method="post" action="{% url 'delete_entry' entry.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No entries yet. <a href="{% url 'add_entry' %}">Add your first entry!</a></p>
+    {% endif %}
+</div>
+{% endblock %}
