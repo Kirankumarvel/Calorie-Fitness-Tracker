@@ -1,4 +1,4 @@
-# 🏋️ Calorie/Fitness Tracker
+# 🏋️ FitTrack a.k.a Calorie/Fitness Tracker
 
 A comprehensive web application built with Django to track daily calorie intake and exercise expenditure. Monitor your fitness journey with intuitive data visualization and personalized insights.
 
